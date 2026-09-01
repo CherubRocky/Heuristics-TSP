@@ -14,9 +14,9 @@ func Cost(permutation []int) float32 {
 
 
 func CostNeighbour(permutation []int, swap1 int, swap2 int) float32 {
-	
+	return 0.0
 }
 
-func GetDistance(int id1, int id2) float32 {
-
+func GetDistance(id1 int, id2 int) float32 {
+	return 0.0
 }
