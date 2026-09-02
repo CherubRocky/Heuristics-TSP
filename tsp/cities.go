@@ -6,6 +6,7 @@ import (
 
 type Cities struct {
 	Matrix [][]float64
+	KEdgesSum float64
 }
 
 // We can implement an inferior triangular matrix with a one-dimensional array
