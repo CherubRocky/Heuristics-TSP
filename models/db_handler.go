@@ -2,9 +2,9 @@ package models
 
 import (
 	"os"
-    "database/sql"
+	"database/sql"
 	"path/filepath"
-    _ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type DB struct {
