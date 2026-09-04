@@ -1,11 +1,9 @@
 package main
 
 import (
-	"github.com/CherubRocky/Heuristics-TSP/models"
-	"fmt"
+	"github.com/CherubRocky/Heuristics-TSP/cli"
 )
 
 func main() {
-	models.NewDB()
-	fmt.Println("hola desde el main")
+	cli.Run()
 }
