@@ -5,8 +5,8 @@ import (
 )
 
 func TestNaturalDistance(t *testing.T) {
-	cdmx := newCoordinates(19.4342, -99.1386)
-	tampico := newCoordinates(22.2167, -97.85)
+	cdmx := NewCoordinates(19.4342, -99.1386)
+	tampico := NewCoordinates(22.2167, -97.85)
 
 	got := getNaturalDistance(cdmx, tampico)
 	want := 337239.25

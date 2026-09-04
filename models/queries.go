@@ -86,9 +86,11 @@ func (db *DB) QueryCities(cits []int) ([]tsp.City, error) {
 	cities := make([]tsp.City, 0, len(cits))
 	for rows.Next() {
 		var city tsp.City
-		if err := rows.Scan(&city.Id, &city.Coords.Latitude, &city.Coords.Longitude); err != nil {
+		var lat, lon float64
+		if err := rows.Scan(&city.Id, &lat, &lon); err != nil {
 			return nil, err
 		}
+		city.Coords = tsp.NewCoordinates(lat, lon)
 		cities = append(cities, city)
 	}
 	if err := rows.Err(); err != nil {
