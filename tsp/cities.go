@@ -10,9 +10,10 @@ import (
 type Cities struct {
 	Matrix [][]float64
 	KEdgesSum float64
+	maxDistance float64
 }
 
-// It is always id_city_1 > id_city_j (superior triangular matrix)
+// It is always id_city_2 > id_city_1 (superior triangular matrix)
 // We can implement an inferior triangular matrix with a one-dimensional array
 func NewCities(conns []Connection, cits []City) *Cities {
 	maxId, _ := getMax(cits)
@@ -28,9 +29,14 @@ func NewCities(conns []Connection, cits []City) *Cities {
 
 // Assuming the lightest connections are always the ones in the DB
 func (c *Cities) calcKEdgesSum (conns []Connection, citNum int) {
+	if len(conns) == 0 {
+		return
+	}
+	
 	slices.SortFunc(conns, func(c1, c2 Connection) int {
 		return cmp.Compare(c1.Distance, c2.Distance)
 	})
+	c.maxDistance = conns[len(conns) - 1].Distance
 	var sum float64
 	for i := len(conns) - 1; i > len(conns) - citNum && i >= 0; i-- {
 		sum += conns[i].Distance
@@ -43,8 +49,8 @@ func (c *Cities) fillPhantom(citsArr []City) {
 		for j := i + 1; j < len(citsArr); j++ {
 			// We know there is no row in Connections with distance field equal to zero
 			if c.GetDistance(citsArr[i].Id, citsArr[j].Id) == 0 {
-				natDist := getNaturalDistance(citsArr[i].Coords, citsArr[j].Coords)
-				c.SetDistance(citsArr[i].Id, citsArr[j].Id, natDist)
+				dist := c.maxDistance * getNaturalDistance(citsArr[i].Coords, citsArr[j].Coords)
+				c.SetDistance(citsArr[i].Id, citsArr[j].Id, dist)
 			}
 		}
 	}

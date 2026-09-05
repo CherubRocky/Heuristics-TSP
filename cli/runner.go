@@ -42,6 +42,7 @@ func Run() {
 	instance := tsp_solver.Instance{cities, cities.KEdgesSum}
 	sol := tsp_solver.TravelSolution{ids2, 0.0}
 	distance := instance.Cost(&sol)
-	fmt.Sprint("The distance of the given solution is: ")
-	fmt.Sprintln(distance)
+	fmt.Print(ids2)
+	fmt.Print("The distance of the given solution is: ")
+	fmt.Println(distance)
 }

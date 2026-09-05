@@ -68,7 +68,7 @@ func (db *DB) QueryCities(cits []int) ([]tsp.City, error) {
 	placeholders = strings.TrimRight(placeholders, ",")
 
 	var b strings.Builder
-	b.WriteString(`SELECT id_city, latitude, longitude FROM cities WHERE id_city IN (`)
+	b.WriteString(`SELECT id, latitude, longitude FROM cities WHERE id IN (`)
 	b.WriteString(placeholders)
 	b.WriteString(")")
 	
