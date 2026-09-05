@@ -21,7 +21,7 @@ func (i *Instance) Cost(sol simulated_annealing.Solution) float64 {
 		}
 		prev = id
 	}
-	return sum / i.Matrix.KEdgesSum
+	return sum / i.Matrix.KEdgesSum// Modified this line
 }
 
 func (i *Instance) CostNeighbour(sol simulated_annealing.Solution, swap1 int, swap2 int) float64 {

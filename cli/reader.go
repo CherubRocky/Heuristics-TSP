@@ -10,7 +10,7 @@ import(
 func readArguments() ([]int, error) {
 	argsWithProg := os.Args
 	csv := argsWithProg[1]
-	idsStrings := strings.SplitN(csv, ",", 0)
+	idsStrings := strings.SplitN(csv, ",", -1)
 	return stringToIntArr(idsStrings)
 }
 

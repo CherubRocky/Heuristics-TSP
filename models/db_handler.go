@@ -28,10 +28,10 @@ func NewDB() (*DB, error) {
 func getDBPath() string {
 	execPath, err := os.Executable()
 	if err != nil {
-		return filepath.Join("data", "tsp")
+		return filepath.Join("data", "tsp.db")
 	}
 
 	execDir := filepath.Dir(execPath)
 
-	return filepath.Join(execDir, "..", "data", "tsp")
+	return filepath.Join(execDir, "data", "tsp.db")
 }
