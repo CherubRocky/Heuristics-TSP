@@ -3,14 +3,19 @@ package cli
 import(
 	"strconv"
 	"strings"
+	"bufio"
 	"os"
 )
 
 // Error checking pending
-func readArguments() ([]int, error) {
-	argsWithProg := os.Args
-	csv := argsWithProg[1]
-	idsStrings := strings.SplitN(csv, ",", -1)
+func readLine() ([]int, error) {
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	if err := scanner.Err(); err != nil {
+		return nil, err 
+	}
+	line := scanner.Text()
+	idsStrings := strings.SplitN(line, ",", -1)
 	return stringToIntArr(idsStrings)
 }
 

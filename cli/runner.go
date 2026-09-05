@@ -10,7 +10,7 @@ import(
 )
 
 func Run() {
-	ids, err := readArguments()
+	ids, err := readLine()
 	ids2 := slices.Clone(ids)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
