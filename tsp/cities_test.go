@@ -10,11 +10,17 @@ func TestNaturalDistance(t *testing.T) {
 
 	got := getNaturalDistance(cdmx, tampico)
 	want := 337239.25
-	t.Errorf("got %f, want %f", got, want)
+	margin := math.Abs(got - want)
+	if margin > 0.000001 {
+		t.Errorf("got %f, want %f", got, want)
+	}
 }
 
 func TestToRadians(t *testing.T) {
 	got := toRadians(360)
 	want := 2 * math.Pi
-	t.Errorf("got %f, want %f", got, want)
+	margin := math.Abs(got - want)
+	if margin > 0.000001 {
+		t.Errorf("got %f, want %f", got, want)
+	}
 }
