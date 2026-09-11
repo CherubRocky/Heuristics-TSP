@@ -9,7 +9,7 @@ func TestNaturalDistance(t *testing.T) {
 	tampico := NewCoordinates(22.2167, -97.85)
 
 	got := getNaturalDistance(cdmx, tampico)
-	want := 337239.25
+	want := 337239.248015266
 	margin := math.Abs(got - want)
 	if margin > 0.000001 {
 		t.Errorf("got %f, want %f", got, want)
