@@ -2,7 +2,7 @@ package simulated_annealing
 
 import (
 	"math"
-	"fmt"
+	//	"fmt"
 )
 
 type Annealer struct {
@@ -17,20 +17,25 @@ type Annealer struct {
 func (a *Annealer) computeBatch(s Solution) (float64, Solution) {
 	var sum float64 = 0.0
 	counter := 0
-	for counter < a.BatchSize {
+	scape := 0
+	for counter < a.BatchSize && scape < 25 * a.BatchSize {
 		neigh := s.GetNeighbour()
 		if neigh.Cost() <= s.Cost() + a.Temperature {
 			if neigh.Cost() < a.Best.Cost() {
 				a.Best = neigh
 			}
-			fmt.Println("Accepted: ", neigh.Cost())
+			// fmt.Println("Accepted: ", neigh.Cost())
 			s = neigh
 			counter++
 			sum += s.Cost()
 		}
+		scape++
 	}
-	fmt.Println("Batch finished. Temperature: ", a.Temperature)
-	return sum / float64(a.BatchSize), s
+	// fmt.Println("Batch finished. Temperature: ", a.Temperature)
+	if counter == 0 {
+		return s.Cost(), s
+	}
+	return sum / float64(counter), s
 	
 }
 
