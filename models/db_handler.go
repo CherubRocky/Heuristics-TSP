@@ -26,6 +26,10 @@ func NewDB() (*DB, error) {
 }
 
 func getDBPath() string {
+	if envPath := os.Getenv("TSP_DB_PATH"); envPath != "" {
+		return envPath
+	}
+	
 	execPath, err := os.Executable()
 	if err != nil {
 		return filepath.Join("data", "tsp.db")
