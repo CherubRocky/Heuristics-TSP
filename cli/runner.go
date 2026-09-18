@@ -44,7 +44,6 @@ func Run(seed uint64) {
 	
 	cities := tsp.NewCities(conns, citsSlice)
 	instance := tsp_solver.Instance{cities, cities.KEdgesSum, rng}
-	fmt.Println("Se llegó al punto")
 	bestSol := instance.Solve(ids2)
 	travelSol, _ := bestSol.(*tsp_solver.TravelSolution)
 	fmt.Println("Mejor ruta encontrada:", travelSol.Permutation)
