@@ -26,7 +26,7 @@
 \maketitle
 
 \begin{abstract}
-El presente trabajo es un reporte acerca de mi implementación de Aceptación por Umbrales, una variante de la Heurística de Recocido Simulado, específicamente para la resolución del Problema del Agente Viajero (TSP) en su variante de Camino Hamiltoniano. Para el desempeño de la implementación, se diseñó un estudio experimental sobre la instancia de 150 ciudades ejecutando una muestra de 1000 semillas pseudoaleatorias. La mejor solución encontrada para dicha instancia fue de 0.139402 en un tiempo aproximado de 50s.
+El presente trabajo es un reporte acerca de una implementación de Aceptación por Umbrales, una variante de la Heurística de Recocido Simulado, específicamente para la resolución del Problema del Agente Viajero (TSP) en su variante de Camino Hamiltoniano. Para el desempeño de la implementación, se diseñó un estudio experimental sobre la instancia de 150 ciudades ejecutando una muestra de 1000 semillas pseudoaleatorias. La mejor solución encontrada para dicha instancia fue de 0.139402 en un tiempo aproximado de 50s.
 \end{abstract}
 
 \section{Introducción}
@@ -57,9 +57,14 @@ El enfoque principal en cuanto al diseño fue desacoplar lo más posible la heur
 
 \section{Implementación y Metodología}
 La heurística fue programada en el lenguaje Go.
+
+Se implementaron los algoritmos proporcionados por el profesor Canek Peláez Valdés \cite{notas_ta}, así como el modelo de aristas no existentes utilizando su distancia natural —calculada a partir del radio de la tierra— multiplicada por la distancia máxima de la instancia para forzar soluciones factibles \cite{notas_tsp}.
+
+Además, se hicieron las siguientes optimizaciones:
+
 \begin{itemize}
     \item \textbf{Mutación \textit{in-place} y Rollback:} En lugar de instanciar nuevas estructuras por cada evaluación, las permutaciones se alteran sobre referencias en memoria (punteros). Si un movimiento es rechazado, la función \texttt{RollBack()} deshace los cambios atómicamente, eliminando la carga del \textit{Garbage Collector}.
-    \item \textbf{Parámetros Experimentales:} Se utilizaron lotes de 5,000 iteraciones por nivel térmico, un factor de enfriamiento $\alpha = 0.95$ y una tolerancia $\epsilon = 0.0001$. Se procesaron 1,000 semillas concurrentemente utilizando \textit{goroutines}.
+    \item \textbf{Parámetros Experimentales:} Se utilizaron lotes de 5,000 iteraciones por nivel térmico, un factor de enfriamiento $\phi = 0.95$ y una tolerancia $\epsilon = 0.0001$. Se procesaron 1,000 semillas concurrentemente utilizando \textit{goroutines}.
 \end{itemize}
 
 \section{Desarrollo}
@@ -86,14 +91,14 @@ Las pruebas se ejecutaron sobre un grafo completo de 150 nodos (TSP-150) en una 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{histograma_tsp150.png}
-    \caption{Distribución de los costos finales sobre 1,000 ejecuciones (semillas) de la 0 a la 1000 para la instancia TSP-150. El umbral objetivo de 0.15 está marcado en línea punteada.}
+    \caption{Distribución de los costos finales sobre 1,000 ejecuciones (semillas) de la 0 a la 999 para la instancia TSP-150. El umbral objetivo de 0.15 está marcado en línea punteada.}
     \label{fig:histograma}
 \end{figure}
 
-Como se observa, la gran mayoría de las semillas convergieron de manera consistente hacia el valle de atracción objetivo, logrando costos por debajo de 0.15. Las corridas descartadas o no factibles son estadísticamente marginales.
+La gran mayoría de las semillas convergieron de manera consistente en el rango de $0.139402$ a $0.17$. Las corridas descartadas o no factibles son estadísticamente marginales.
 
 \newpage
-Además, la mejor solución encontrada fue evaluada en 0.139402 con la semilla 614, con la secuencia de IDs de ciudades: \{494, 495, 167, 328, 326, 1037, 169, 1073, 330, 819, 655, 818, 666, 658, 166, 822, 74, 1001, 297, 980, 336, 840, 350, 670, 327, 511, 504, 500, 825, 20, 660, 510, 343, 985, 674, 334, 999, 8, 662, 331, 349, 1003, 11, 164, 25, 492, 491, 499, 347, 489, 4, 174, 817, 23, 176, 668, 352, 978, 5, 6, 1004, 351, 981, 988, 165, 3, 333, 990, 353, 27, 991, 185, 22, 676, 490, 344, 653, 654, 26, 820, 345, 332, 181, 14, 982, 187, 816, 678, 823, 7, 507, 184, 667, 656, 2, 173, 673, 665, 163, 172, 182, 496, 19, 839, 815, 9, 1, 829, 661, 832, 663, 657, 508, 986, 505, 168, 329, 509, 493, 979, 837, 995, 984, 501, 17, 444, 826, 244, 339, 1038, 12, 828, 502, 340, 675, 186, 520, 16, 671, 179, 652, 1075, 483, 512, 821, 75, 346, 183, 77, 171\}. Este es el recorrido de dicha solución:
+Además, la mejor solución encontrada fue evaluada en 0.139402 dada la semilla 614 con parámetros $\epsilon=0.00001, \phi=0.99$ y $BatchSize=5000$, con la permutación: \{494, 495, 167, 328, 326, 1037, 169, 1073, 330, 819, 655, 818, 666, 658, 166, 822, 74, 1001, 297, 980, 336, 840, 350, 670, 327, 511, 504, 500, 825, 20, 660, 510, 343, 985, 674, 334, 999, 8, 662, 331, 349, 1003, 11, 164, 25, 492, 491, 499, 347, 489, 4, 174, 817, 23, 176, 668, 352, 978, 5, 6, 1004, 351, 981, 988, 165, 3, 333, 990, 353, 27, 991, 185, 22, 676, 490, 344, 653, 654, 26, 820, 345, 332, 181, 14, 982, 187, 816, 678, 823, 7, 507, 184, 667, 656, 2, 173, 673, 665, 163, 172, 182, 496, 19, 839, 815, 9, 1, 829, 661, 832, 663, 657, 508, 986, 505, 168, 329, 509, 493, 979, 837, 995, 984, 501, 17, 444, 826, 244, 339, 1038, 12, 828, 502, 340, 675, 186, 520, 16, 671, 179, 652, 1075, 483, 512, 821, 75, 346, 183, 77, 171\}. Este es el recorrido en el mapa de dicha solución:
 
 \begin{figure}[H]
     \centering
@@ -102,7 +107,7 @@ Además, la mejor solución encontrada fue evaluada en 0.139402 con la semilla 6
     \label{fig:recorrido}
 \end{figure}
 
-\section{Conclusiones}
+\section{Conclusión}
 La implementación de la Aceptación por Umbrales con una condición de paro basada en la fluctuación del costo promedio de lotes demostró ser robusta y determinista. La integración de técnicas de ingeniería de software como la mutación \textit{in-place} compensó ampliamente la exploración intensiva en cada meseta térmica. Fue factible alcanzar un costo inferior a 0.15 para la instancia de 150 ciudades, evidenciando la eficacia del método propuesto por Dueck y Scheuer en espacios de búsqueda de alta complejidad. No obstante, el sistema es susceptible de mejora continua, siendo la ausencia de procesamiento paralelo a nivel de hilos y la ausencia del barrido para cerciorarnos de que la solución final sea la mejor a nivel local limitantes importantes a considerar en futuras extensiones del proyecto.
 
 \begin{thebibliography}{9}
@@ -116,6 +121,16 @@ Journal of Computational Physics, 90(1), 161-175.
 Michalewicz, Z., \& Fogel, D. B. (2000). 
 \textit{How to Solve It: Modern Heuristics}. 
 Springer-Verlag.
+
+\bibitem{notas_ta} 
+Peláez, C. (s.f.) 
+\textit{Notas de clase sobre recocido simulado y aceptación por Umbrales}. 
+Universidad Nacional Autónoma de México.
+
+\bibitem{notas_tsp} 
+Peláez, C. (s.f.) 
+\textit{Notas de clase sobre el Problema del Agente Viajero y aceptación por Umbrales}. 
+Universidad Nacional Autónoma de México.
 
 \end{thebibliography}
 
