@@ -1,7 +1,7 @@
 # Heuristics-TSP
 # TSP Solver - Threshold Accepting (Go)
 
-Implementación en Go de **Aceptación por Umbrales** (*Threshold Accepting*) aplicada a la resolución del **Problema del Agente Viajero (TSP)** en su variante de Camino Hamiltoniano. Desarrollado como proyecto para la Facultad de Ciencias de la UNAM.
+Implementación en Go de **Aceptación por Umbrales** (*Threshold Accepting*) aplicada a la resolución del **Problema del Agente Viajero (TSP)** en su variante de Camino Hamiltoniano. Desarrollado como proyecto para el seminario de Heurísticas de Optimización Combinatiora.
 
 ## Estructura del Proyecto
 
