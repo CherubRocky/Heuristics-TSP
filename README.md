@@ -26,6 +26,16 @@ Los parámetros de configuración de la heurística (tamaño de lote, épsilon, 
 *   **Go** (versión 1.18 o superior recomendada).
 *   Un archivo de instancia con los IDs de las ciudades separados por comas (ej. `cosas.txt`).
 
+## Dependencias
+
+Descargar las dependencias del módulo ejecutando:
+
+```bash
+go mod tidy
+```
+
+A continuación, compila el programa para generar el binario ejecutable:
+
 ## Compilación
 
 Para compilar el programa y generar el binario ejecutable, ejecuta el siguiente comando en la raíz del proyecto:
