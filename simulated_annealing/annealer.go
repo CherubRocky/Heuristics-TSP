@@ -46,9 +46,12 @@ func (a *Annealer) ThresholdAcceptance(s Solution) Solution {
 	p := 0.0
 	for a.Temperature > a.Epsilon {
 		q := math.MaxFloat64
-		for p <= q {
-			q = p
+		for {
 			p, s = a.computeBatch(s)
+			if q - p < a.Epsilon {
+				break
+			}
+			q = p
 		}
 		a.Temperature = a.ColdingFactor * a.Temperature
 	}

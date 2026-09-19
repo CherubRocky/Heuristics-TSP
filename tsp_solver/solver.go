@@ -10,7 +10,7 @@ func (i *Instance) Solve(ids []int) simulated_annealing.Solution {
 	initSolCost := i.Cost(&initialSol)
 	initialSol.SolutionCost = initSolCost
 	ann := simulated_annealing.Annealer{
-		Epsilon: 0.00002,
+		Epsilon: 0.00001,
 		ProbEps: 0.05,
 		Temperature: 8.0,
 		ColdingFactor: 0.99,
