@@ -19,15 +19,18 @@ func (a *Annealer) computeBatch(s Solution) (float64, Solution) {
 	counter := 0
 	scape := 0
 	for counter < a.BatchSize && scape < 25 * a.BatchSize {
+		ogCost := s.Cost()
 		neigh := s.GetNeighbour()
-		if neigh.Cost() <= s.Cost() + a.Temperature {
-			if neigh.Cost() < a.Best.Cost() {
-				a.Best = neigh
+		nCost := neigh.Cost()
+		if nCost <= ogCost + a.Temperature {
+			if nCost < a.Best.Cost() {
+				a.Best = neigh.Clone()
 			}
 			// fmt.Println("Accepted: ", neigh.Cost())
-			s = neigh
 			counter++
 			sum += s.Cost()
+		} else {
+			s.RollBack()
 		}
 		scape++
 	}
@@ -80,13 +83,16 @@ func (a *Annealer) AcceptedPercent(s Solution, t float64) float64 {
 	counter := 0
 	n := a.BatchSize
 	for i := 0; i < n; i++ {
+		ogCost := s.Cost()
 		neigh := s.GetNeighbour()
-		if neigh.Cost() <= s.Cost() + t {
-			if neigh.Cost() < a.Best.Cost() {
-				a.Best = neigh
+		nCost := s.Cost()
+		if nCost <= ogCost + t {
+			if nCost < a.Best.Cost() {
+				a.Best = neigh.Clone()
 			}
 			counter++
-			s = neigh
+		} else {
+			s.RollBack()
 		}
 	}
 	return float64(counter) / float64(n)
@@ -108,15 +114,3 @@ func (a *Annealer) BinarySearch(s Solution, t1 float64, t2 float64, p float64) f
 	}
 	
 }
-
-/*func (a *Annealer) ThresholdAcceptance(s Solution) Solution {
-	if a.Best == nil {
-		a.Best = s
-	}
-
-	for a.Temperature > a.Epsilon {
-		_, s = a.computeBatch(s)
-		a.Temperature = a.ColdingFactor * a.Temperature
-	}
-	return a.Best
-        }*/

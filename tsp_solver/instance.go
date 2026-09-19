@@ -1,6 +1,5 @@
 package tsp_solver
 import (
-	"slices"
 	"math/rand/v2"
 	
 	"github.com/CherubRocky/Heuristics-TSP/simulated_annealing"
@@ -30,8 +29,7 @@ func (i *Instance) Cost(sol simulated_annealing.Solution) float64 {
 
 // Refactoring pending
 func (i *Instance) Neighbour(sol simulated_annealing.Solution, swap1 int, swap2 int) simulated_annealing.Solution {
-	tSol0 := sol.(*TravelSolution)
-	tSol := TravelSolution{slices.Clone(tSol0.Permutation), 0.0, i}
+	tSol := sol.(*TravelSolution)
 	max, min := getMaxAndMin(swap1, swap2)
 	var maxEdges, minEdges, newEdges1, newEdges2 float64
 	if max == min + 1 {
@@ -77,9 +75,11 @@ func (i *Instance) Neighbour(sol simulated_annealing.Solution, swap1 int, swap2 
 		}
 	}
 	balance := (-(maxEdges + minEdges) + (newEdges1 + newEdges2)) / i.Normalizer
-	newCost := sol.Cost() + balance
-	tSol.SolutionCost = newCost
-	return &tSol
+	tSol.SolutionCost += balance
+	tSol.lastDiff = balance
+	tSol.swapInd1 = max
+	tSol.swapInd2 = min
+	return tSol
 }
 
 func (i *Instance) ComputeNormalizer() {}

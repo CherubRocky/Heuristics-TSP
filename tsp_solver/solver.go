@@ -17,7 +17,7 @@ func (i *Instance) Solve(ids []int) simulated_annealing.Solution {
 		BatchSize: 5000,
 		Best: &initialSol,
 	}
-	ann.InitialTemp(&initialSol, 0.87)
+	ann.InitialTemp(initialSol.Clone(), 0.87)
 	fmt.Println("Temperatura inicial: ", ann.Temperature)
 	return ann.ThresholdAcceptance(&initialSol)
 }
