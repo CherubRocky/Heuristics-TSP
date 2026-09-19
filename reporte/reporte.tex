@@ -56,7 +56,7 @@ El enfoque principal en cuanto al diseño fue desacoplar lo más posible la heur
 \end{itemize}
 
 \section{Implementación y Metodología}
-La heurística fue programada en el lenguaje Go, priorizando la concurrencia y la eficiencia en el manejo de memoria.
+La heurística fue programada en el lenguaje Go.
 \begin{itemize}
     \item \textbf{Mutación \textit{in-place} y Rollback:} En lugar de instanciar nuevas estructuras por cada evaluación, las permutaciones se alteran sobre referencias en memoria (punteros). Si un movimiento es rechazado, la función \texttt{RollBack()} deshace los cambios atómicamente, eliminando la carga del \textit{Garbage Collector}.
     \item \textbf{Parámetros Experimentales:} Se utilizaron lotes de 5,000 iteraciones por nivel térmico, un factor de enfriamiento $\alpha = 0.95$ y una tolerancia $\epsilon = 0.0001$. Se procesaron 1,000 semillas concurrentemente utilizando \textit{goroutines}.
